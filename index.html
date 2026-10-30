@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131d">
+  <title>HALFDAY COUNTDOWN HAHAHA</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10131d;
+      --muted: #9299ad;
+      --text: #f4f6ff;
+      --accent: #a99bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow: hidden;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 18% 15%, rgba(115, 99, 220, .22), transparent 38%),
+        radial-gradient(ellipse at 85% 82%, rgba(57, 164, 177, .13), transparent 34%),
+        var(--bg);
+    }
+    .glow {
+      position: fixed;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: rgba(135, 117, 255, .12);
+      filter: blur(90px);
+      pointer-events: none;
+    }
+    .glow.one { top: -170px; right: 8%; }
+    .glow.two { bottom: -190px; left: 5%; background: rgba(75, 190, 190, .10); }
+    main {
+      position: relative;
+      width: min(100%, 720px);
+      padding: clamp(34px, 7vw, 72px) 24px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      box-shadow: 0 28px 90px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter: blur(18px);
+    }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .28em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 6vw, 46px);
+      font-weight: 650;
+      letter-spacing: -.055em;
+    }
+    .subtitle {
+      margin: 12px 0 42px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: .02em;
+    }
+    .timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(8px, 3vw, 22px);
+      font-variant-numeric: tabular-nums;
+    }
+    .unit { min-width: 76px; }
+    .number {
+      display: block;
+      font-size: clamp(48px, 11vw, 88px);
+      line-height: 1;
+      font-weight: 550;
+      letter-spacing: -.07em;
+      text-shadow: 0 0 35px rgba(169,155,255,.14);
+    }
+    .label {
+      display: block;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+    .colon {
+      align-self: flex-start;
+      padding-top: 2px;
+      color: rgba(169,155,255,.65);
+      font-size: clamp(38px, 8vw, 66px);
+      line-height: 1;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .bottom {
+      margin-top: 46px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .bottom strong { color: #d9d4ff; font-weight: 600; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    @media (max-width: 420px) {
+      main { border-radius: 22px; }
+      .unit { min-width: 0; }
+      .subtitle { margin-bottom: 34px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .colon { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <main>
+    <h1>HALFDAY COUNTDOWN</h1>
+
+    <section class="timer" role="timer" aria-live="off" aria-label="Time remaining until 12 PM">
+      <div class="unit">
+        <span class="number" id="hours">00</span>
+        <span class="label">HOURS</span>
+      </div>
+      <span class="colon">:</span>
+      <div class="unit">
+        <span class="number" id="minutes">00</span>
+        <span class="label">MINUTES</span>
+      </div>
+      <span class="colon">:</span>
+      <div class="unit">
+        <span class="number" id="seconds">00</span>
+        <span class="label">SECONDS</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    function updateCountdown() {
+      const now = new Date();
+      const target = new Date(now);
+      target.setHours(12, 0, 0, 0);
+      if (now >= target) target.setDate(target.getDate() + 1);
+
+      const remaining = Math.max(0, Math.floor((target - now) / 1000));
+      const hours = Math.floor(remaining / 3600);
+      const minutes = Math.floor((remaining % 3600) / 60);
+      const seconds = remaining % 60;
+
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
